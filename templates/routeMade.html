@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Router</title>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Router</title>
+	<meta name="description" content="This is a only a final nothing is spell checked, and most of this header is overkill">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css-reset.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>	
+</head>
+
+<body>
+	<div class="sum">
+		<h1>{{route['summary']}}</h1>
+	</div>
+
+	<br><h2>Here's the weather at each location.</h2>
+	<div class="destinations">
+		{% for location in locs %}
+		<div class="forecast">
+			<table>
+				<tr><th colspan="2">{{location["address"]}}</th></tr>
+				<tr><td calss="text" colspan="2">Schedule arrival on {{location["arrivalTime"]}}</td></tr>
+				{% if location["weather"] %}
+				<tr><td><img src={{location["weather"]["icon"]}} alt={{location["weather"]["shortForecast"]}}>
+					</td>
+					<td class="text">
+						<strong>{{location["weather"]["name"]}}</strong>: {{location["weather"]["detailedForecast"]}}
+					</td></tr>
+				{% endif %}
+			</table>
+		</div>
+		{% endfor %}
+
+	</div>
+	<br>
+
+	<div>
+		<h2>Here's a map!</h2>
+		<img class="map" src={{route['img']}} alt="Image of route">
+		<p><a href={{route['livemap']}}> Google maps instead?</a></p>
+	</div>
+	<br>
+	<div>		
+		<h2>Directions</h2><br>
+		{% for direct in route['directions'] %}
+			<p>{{direct}}</p>
+		{% endfor %}
+	</div>
+
+	<p><a class="end" href="/">Make another route?</a></p>
+
+</body>
+</html>
