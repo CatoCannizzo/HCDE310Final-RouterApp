@@ -1,99 +1,148 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Router</title>
-	<meta name="description" content="This is a only a final nothing is spell checked, and most of this header is overkill">
-	<link rel="stylesheet" href="{{ url_for('static', filename='main2.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css-reset.css') }}">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</head>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Router</title>
+		<meta
+			name="description"
+			content="This is a only a final nothing is spell checked, and most of this header is overkill"
+		/>
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='main2.css') }}"
+		/>
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='css-reset.css') }}"
+		/>
+		<!-- <link rel="stylesheet" href="./../static/main.css" />
+	<link rel="stylesheet" href="./../static/main2.css" /> -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	</head>
 
-<body>
-	<div class="container">
-		<script>
-			$(document).ready(function() {
-				var today = new Date();
-				var dd = today.getDate();
-				var mm = today.getMonth()+1; //January is 0!
-				var yyyy = today.getFullYear();
-				if(dd<10){
-						dd='0'+dd
-					} 
-					if(mm<10){
-						mm='0'+mm
-					} 
+	<body>
+		<div class="container">
+			<script>
+				$(document).ready(function () {
+					var today = new Date();
+					var dd = today.getDate();
+					var mm = today.getMonth() + 1; //January is 0!
+					var yyyy = today.getFullYear();
+					if (dd < 10) {
+						dd = "0" + dd;
+					}
+					if (mm < 10) {
+						mm = "0" + mm;
+					}
 
-				today = yyyy+'-'+mm+'-'+dd;
+					today = yyyy + "-" + mm + "-" + dd;
 
-				$('#Departure').attr({
-					min: today,
-					value: today
-				});
-					
-				var max_fields = 10;
-				var wrapper = $(".addressformbutton");
-				var add_button = $(".add_form_field");
-				var x = 0;
+					$("#Departure").attr({
+						min: today,
+						value: today,
+					});
 
-				$(add_button).click(function(e) {
-					e.preventDefault();
-					if (x < max_fields) {
-						x++;
-						$(wrapper).append(`<div>
+					var max_fields = 10;
+					var wrapper = $(".addressformbutton");
+					var add_button = $(".add_form_field");
+					var x = 0;
+
+					$(add_button).click(function (e) {
+						e.preventDefault();
+						if (x < max_fields) {
+							x++;
+							$(wrapper).append(`<div>
 							<label for="add${x}">Stop # ${x} ••• </label>		
 							<label for "time">•  How many hours will the stop be? </label><br>
 							<input type="text" name="add${x}" id="add${x}" placeholder = "Portland, OR"/>
 							<input type = "number" id="time${x}" name="time${x}" value="3"><a href="#" class="delete">Delete</a>
 							</div>`);
-					} else {
-						alert('You reached the limit of waypoints!')
-					}
+						} else {
+							alert("You reached the limit of waypoints!");
+						}
+					});
+
+					$(wrapper).on("click", ".delete", function (e) {
+						e.preventDefault();
+						$(this).parent("div").remove();
+						x--;
+					});
 				});
-
-				$(wrapper).on("click", ".delete", function(e) {
-					e.preventDefault();
-					$(this).parent('div').remove();
-					x--;
-				})
-			});
-		</script>
-		<div class="herobox1">
-			<h1>Plan a Roadtrip!</h1>
-		</div>
-		{% if prompt %}
-		<div class="prompt">	
-			{% for para in prompt %}
-				{{para}}<br>
-			{% endfor %}
-		</div>
-		{% endif %}
-		<div class="instructions">
-			<p> Input a couple United States addresses!  </p>
-		</div>
-		<form id="addressform" action="" method="post" class="addresses">
-			<div class="starta"><label for="start">Starting Address</label>
-				<input type="text" name="start" id="start"placeholder="1410 NE Campus Parkway, Seattle"/>
+			</script>
+			<div class="herobox1">
+				<h1>Plan a Roadtrip!</h1>
 			</div>
+			{% if prompt %}
+			<div class="prompt">
+				{% for para in prompt %} {{para}}<br />
+				{% endfor %}
+			</div>
+			{% endif %}
+			<div class="instructions">
+				<p>Input a couple United States addresses!</p>
+			</div>
+			<form id="addressform" action="" method="post" class="addresses">
+				<div class="starta">
+					<label for="start">Starting Address</label>
+					<input
+						type="text"
+						name="start"
+						id="start"
+						placeholder="1410 NE Campus Parkway, Seattle"
+					/>
+				</div>
 
-			<div class ="finala"><label for="destination">Final Destination</label>
-				<input type="text" name="destination" id="destination"placeholder="Olympia, Wa"/></div>
-				
-			<div class = "time">
-				<label for="Departure">Depature Date:</label>
-				<input type="date" id="Departure" name="deDa" required pattern="\d{4}-\d{2}-\d{2}" min="2020-10-10" value = "2020-10-10">
-				<label for="departuretime"></label>
-				<input type="time" id = "departuretime" name ="deTi" value = "08:00">
-				
-				<p>[Can only display forecasts for up to 7 days into the future]</p></div>
-			<br>
-			<div class="addressformbutton">
-				<button class="add_form_field">Add A Stop &nbsp; 
-				<span style="font-size:16px; font-weight:bold;"> +</span></button></div>
-			<br>
-			<div><input type="submit" value="Get Route" name="submit" id="submit"/></div>
-		</form>
-	</div>
-</body>
+				<div class="finala">
+					<label for="destination">Final Destination</label>
+					<input
+						type="text"
+						name="destination"
+						id="destination"
+						placeholder="Olympia, Wa"
+					/>
+				</div>
+
+				<div class="time">
+					<label for="Departure">Depature Date:</label>
+					<input
+						type="date"
+						id="Departure"
+						name="deDa"
+						required
+						pattern="\d{4}-\d{2}-\d{2}"
+						min="2020-10-10"
+						value="2020-10-10"
+					/>
+					<label for="departuretime"></label>
+					<input
+						type="time"
+						id="departuretime"
+						name="deTi"
+						value="08:00"
+					/>
+
+					<p>
+						[Can only display forecasts for up to 7 days into the future]
+					</p>
+				</div>
+				<br />
+				<div class="addressformbutton">
+					<button class="add_form_field">
+						Add A Stop &nbsp;
+						<span style="font-size: 16px; font-weight: bold"> +</span>
+					</button>
+				</div>
+				<br />
+				<div>
+					<input
+						type="submit"
+						value="Get Route"
+						name="submit"
+						id="submit"
+					/>
+				</div>
+			</form>
+		</div>
+	</body>
 </html>
